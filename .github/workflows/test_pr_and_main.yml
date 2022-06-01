@@ -48,8 +48,34 @@ jobs:
 
       # Self hosted macos-arm64
         - os: macos-arm64
+          PYTHON: 3.8
           TARGET: osx
           PYENV: pip
+
+        - os: macos-arm64
+          PYTHON: 3.8
+          TARGET: osx
+          PYENV: conda
+
+        - os: macos-arm64
+          PYTHON: 3.9
+          TARGET: osx
+          PYENV: pip
+
+        - os: macos-arm64
+          PYTHON: 3.9
+          TARGET: osx
+          PYENV: conda
+
+        - os: macos-arm64
+          PYTHON: '3.10'
+          TARGET: osx
+          PYENV: pip
+
+        - os: macos-arm64
+          PYTHON: '3.10'
+          TARGET: osx
+          PYENV: conda
 
         - os: windows-latest
           TARGET: win
