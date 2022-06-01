@@ -45,6 +45,7 @@ jobs:
           TARGET: osx
           PYENV: pip
 
+      # Self hosted macos-arm64
         - os: macos-arm64
           python: 3.8
           TARGET: osx
