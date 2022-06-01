@@ -255,7 +255,7 @@ jobs:
         PYOMO_DEPENDENCIES=`python setup.py dependencies \
             --extras "$EXTRAS" | tail -1`
         # HACK: Remove problem packages on macos-arm64
-        if test "${{matrix.TARGET}}" == macos-arm64; then
+        if test "${{matrix.os}}" == macos-arm64; then
             WORDSTOREMOVE="casadi"
             for WORD in $WORDSTOREMOVE; do
                 PYOMO_DEPENDENCIES=${PYOMO_DEPENDENCIES//$WORD/}
