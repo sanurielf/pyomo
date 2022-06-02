@@ -53,29 +53,14 @@ jobs:
           PYENV: pip
 
         - os: macos-arm64
-          PYTHON: 3.8
-          TARGET: osx
-          PYENV: conda
-
-        - os: macos-arm64
           PYTHON: 3.9
-          TARGET: osx
-          PYENV: pip
-
-        - os: macos-arm64
-          PYTHON: 3.9
-          TARGET: osx
-          PYENV: conda
-
-        - os: macos-arm64
-          PYTHON: '3.10'
           TARGET: osx
           PYENV: pip
 
         - os: macos-arm64
           PYTHON: '3.10'
           TARGET: osx
-          PYENV: conda
+          PYENV: pip
 
         - os: windows-latest
           TARGET: win
@@ -243,11 +228,20 @@ jobs:
       run: |
         echo "SETUPTOOLS_USE_DISTUTILS=local" >> $GITHUB_ENV
 
+    # python is not available yet for MAXOS arm64. We will use the homebrew
+    # version for the time being
     - name: Set up Python ${{ matrix.python }}
-      if: matrix.PYENV == 'pip'
+      if: matrix.PYENV == 'pip' && matrix.os != 'macos-arm64'
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python }}
+
+    - name: Set up Python ${{ matrix.python }} macos-arm64
+      if: matrix.PYENV == 'pip' && matrix.os == 'macos-arm64'
+      run: |
+        brew install python@${{ matrix.python }}
+
+
 
     - name: Set up Miniconda Python ${{ matrix.python }}
       if: matrix.PYENV == 'conda'
