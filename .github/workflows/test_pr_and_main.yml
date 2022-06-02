@@ -51,16 +51,19 @@ jobs:
           PYTHON: 3.8
           TARGET: osx
           PYENV: pip
+          slim: 1
 
         - os: macos-arm64
           PYTHON: 3.9
           TARGET: osx
           PYENV: pip
+          slim: 1
 
         - os: macos-arm64
           PYTHON: '3.10'
           TARGET: osx
           PYENV: pip
+          slim: 1
 
         - os: windows-latest
           TARGET: win
@@ -228,8 +231,10 @@ jobs:
       run: |
         echo "SETUPTOOLS_USE_DISTUTILS=local" >> $GITHUB_ENV
 
-    # python is not available yet for MAXOS arm64. We will use the homebrew
-    # version for the time being
+    # Python is not available yet for macos-arm64. We use the homebrew
+    # version for the time being. When macos-arm64 build appear in
+    # https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json
+    # we can use the github actions/setup-python version
     - name: Set up Python ${{ matrix.python }}
       if: matrix.PYENV == 'pip' && matrix.os != 'macos-arm64'
       uses: actions/setup-python@v3
@@ -240,6 +245,7 @@ jobs:
       if: matrix.PYENV == 'pip' && matrix.os == 'macos-arm64'
       run: |
         brew install python@${{ matrix.python }}
+        brew link --overwrite python@${{ matrix.python }}
 
 
 
@@ -430,6 +436,9 @@ jobs:
             $URL = "$URL/windows/windows_x64_64.exe"
         } elseif ( "${{matrix.TARGET}}" -eq "osx" ) {
             $URL = "$URL/macosx/osx_x64_64_sfx.exe"
+        } elseif ( "${{matrix.os}}" -eq "macos-arm64")
+                echo "GAMS not available on OSX arm64"
+                exit 0
         } else {
             $URL = "$URL/linux/linux_x64_64_sfx.exe"
         }
